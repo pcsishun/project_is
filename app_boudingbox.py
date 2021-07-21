@@ -1,7 +1,7 @@
 import cv2
 from pytesseract import  pytesseract # download tesseract here https://tesseract-ocr.github.io/tessdoc/Downloads.html 
 from pytesseract import Output
-
+import os 
 
 pytesseract.tesseract_cmd = r'C:\\Program Files\Tesseract-OCR\tesseract.exe' ## change path 
 
@@ -53,12 +53,15 @@ for i, word in enumerate(image_data['text']):
         , line_num,'word_num', word_num,'left', x,'top', y,'width', w,'height',h , 'Word predict = ', word)
 
 
-        # [ index, x, y, w, h, มี BB หรือไม่, มีคำหรือไม่]
+        # [ index, x, y, w, h, มี BB หรือไม่, มีคำหรือไม่, BB นั้นจะใช้หรือไม่ใช้]
         if word != "" or word != " ":
-            indexTextArea_info.append([i, x, y, w, h, 1, 1])
+            indexTextArea_info.append([i, x, y, w, h, 1, 1, word])
+
         elif  word  == "" or word == " ":
-            indexTextArea_info.append([i, x, y, w, h, 1, 0])
-    
+            indexTextArea_info.append([i, x, y, w, h, 1, 0, word])
+
+  
+
 
 print(indexTextArea_info)
 cv2.imshow("window", img)
