@@ -86,14 +86,14 @@ for i, word in enumerate(image_data['text']):
         if 40 < x < 230 and 220 < y < 255:
             cv2.rectangle(img, (230, 255), (40,220), (255,50,255), 1)
             Data_Logo.append([x, y , w, h, word])
-            print("Not use A: ",x, y, w, h, word)
+            # print("Not use A: ",x, y, w, h, word)
             print('\n')
 
         ## Data_Payment_type
         if 50 < x < 600 and 270 < y < 360:
             cv2.rectangle(img, (600, 360), (50,270), (255,50,255), 1)
             Data_Payment_type.append([x, y , w, h, word])
-            print("Not use B: ",x, y, w, h, word)
+            # print("Not use B: ",x, y, w, h, word)
             print('\n')
 
         ## Data_Scan
@@ -102,7 +102,7 @@ for i, word in enumerate(image_data['text']):
             if 100 < x < 700 and 570 < y < 700: 
                 cv2.rectangle(img, (800, 700), (100, 570), (255,50,255), 1)
                 Data_Scan.append([x, y , w, h, word])
-                print("Not use C: ",x, y, w, h, word)
+                # print("Not use C: ",x, y, w, h, word)
             print('\n')              
 
         ## Data_TF
@@ -111,7 +111,7 @@ for i, word in enumerate(image_data['text']):
             if 100 < x < 700 and 570 < y < 700: 
                 cv2.rectangle(img, (800, 700), (100, 570), (255,50,255), 1)
                 Data_TF.append([x, y , w, h, word])
-                print("Not use C: ",x, y, w, h, word)
+                # print("Not use C: ",x, y, w, h, word)
             print('\n')
 
         ## Data_QR
@@ -120,27 +120,27 @@ for i, word in enumerate(image_data['text']):
             if 100 < x < 700 and 570 < y < 920: 
                 cv2.rectangle(img, (800, 920), (100, 570), (255,50,255), 1)
                 Data_QR.append([x, y , w, h, word])
-                print("Not use C: ",x, y, w, h, word)
+                # print("Not use C: ",x, y, w, h, word)
             print('\n')
         
         ## Data_BB
         if level == 5:
             cv2.rectangle(img, (x,y), (x+w, y+h), (0,0,255),1)
             Data_BB.append([x, y, w, h, word])
-            print("word use:",x, y, w, h, word)
+            # print("word use:",x, y, w, h, word)
             print('\n')
 
         ## Data_word
         if level == 4:
             cv2.rectangle(img, (x,y), (x+w, y+h), (255,0,0),2)
             Data_word.append([x, y, w, h, word])
-            print("BB use:",x, y, w, h, word)
+            # print("BB use:",x, y, w, h, word)
             print('\n')
 
     ## Data_bb_notuses
     else:
         Data_bb_notuses.append([x, y, w, h, word])
-        print("BB Not uses:",x, y, w, h, word)
+        # print("BB Not uses:",x, y, w, h, word)
         print('\n')
         
     iterate = iterate + 1
