@@ -7,7 +7,7 @@ pytesseract.tesseract_cmd = r'C:\\Program Files\Tesseract-OCR\tesseract.exe' ## 
 
 
 ## โหลดรูปมาจัดทำให้อย่ในรูปแบบของ black and white 
-img_convert = cv2.imread('./image_krungsri/test23.jpg') # img paths  
+img_convert = cv2.imread('./image_krungsri/test_1.jpg') # img paths  
 
 # convert into gray scale.
 gray_scale = cv2.cvtColor(img_convert,cv2.COLOR_RGB2GRAY)
@@ -76,20 +76,20 @@ eslipType = eslipType_krungsri(image_data)
 print(eslipType)
 
 ## Word and BB not use ## 
-Data_QR = []
-Data_Scan = []
-Data_TF = []
-Data_Logo = []
-Data_Payment_type = []
 Data_bb_notuses = []
-Data_fee = []
 
 ## Word and BB use ## 
 Data_word = []
 Data_BB = []
 
+ 
+
 ## Overall data in image ## 
 data_overall_image = []
+
+## Check BB level 4 and 5 ## 
+BB_level_4_5 = []
+
 
 for i, word in enumerate(image_data['text']):
     x = image_data['left'][i]
@@ -104,67 +104,18 @@ for i, word in enumerate(image_data['text']):
     page_num = image_data['page_num'][i]
 
     data_overall_image.append([level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, word])
+
+    # debug 
     cv2.rectangle(img, (313, 594), (313 + 477,594+35), (255,50,255), 2)
     
 
     if level == 4 or level == 5:
 
-        ## Data_Logo
-        if 40 < x < 230 and 220 < y < 255:
-            cv2.rectangle(img, (230, 255), (40,220), (255,50,255), 1)
-            Data_Logo.append([level, page_num, block_num, par_num, line_num, word_num, x, y , w, h, word])
-            # print("Not use A: ",x, y, w, h, word)
-            print('\n')
-
-        ## Data_Payment_type
-        if 50 < x < 600 and 270 < y < 360:
-            cv2.rectangle(img, (600, 360), (50,270), (255,50,255), 1)
-            Data_Payment_type.append([level, page_num, block_num, par_num, line_num, word_num, x, y , w, h, word])
-            # print("Not use B: ",x, y, w, h, word)
-            print('\n')
-
-        ## Data_Scan
-        if eslipType[0] == "Scan":
-            
-            if 100 < x < 700 and 570 < y < 700: 
-                cv2.rectangle(img, (800, 700), (100, 570), (255,50,255), 1)
-                Data_Scan.append([level, page_num, block_num, par_num, line_num, word_num, x, y , w, h, word])
-                # print("Not use C: ",x, y, w, h, word)
-
-            if  100 < x < 800 and 760 < y < 820:
-                cv2.rectangle(img, (800, 820), (100, 760), (255,50,255), 1)
-                Data_Scan.append([level, page_num, block_num, par_num, line_num, word_num, x, y , w, h, word])
-
-
-        ## Data_TF
-        if eslipType[0] == "TF":
-            
-            if 100 < x < 700 and 570 < y < 700: 
-                cv2.rectangle(img, (800, 700), (100, 570), (255,50,255), 1)
-                Data_TF.append([level, page_num, block_num, par_num, line_num, word_num,x, y , w, h, word])
-                # print("Not use C: ",x, y, w, h, word)
-            
-            if  100 < x < 800 and 760 < y < 820:
-                cv2.rectangle(img, (800, 820), (100, 760), (255,50,255), 1)
-                Data_Scan.append([level, page_num, block_num, par_num, line_num, word_num, x, y , w, h, word])
-
-        ## Data_QR
-        if eslipType[0] == "QR":
-            
-            if 100 < x < 700 and 570 < y < 920: 
-                cv2.rectangle(img, (800, 920), (100, 570), (255,50,255), 1)
-                Data_QR.append([level, page_num, block_num, par_num, line_num, word_num,x, y , w, h, word])
-                # print("Not use C: ",x, y, w, h, word)
-
-
-            if 100 < x < 800 and 990 < y < 1035:
-                cv2.rectangle(img, (800, 1035), (100, 990), (255,50,255), 1)
-                Data_QR.append([level, page_num, block_num, par_num, line_num, word_num,x, y , w, h, word])
-                
         ## Data_BB
         if level == 4:
             cv2.rectangle(img, (x,y), (x+w, y+h), (0,0,255),1)
             Data_BB.append([level, page_num, block_num, par_num, line_num, word_num,x, y, w, h, word])
+            BB_level_4_5.append([level, page_num, block_num, par_num, line_num, word_num,x, y, w, h, word])
             # print("word use:",x, y, w, h, word)
             print('\n')
 
@@ -172,6 +123,7 @@ for i, word in enumerate(image_data['text']):
         if level == 5:
             cv2.rectangle(img, (x,y), (x+w, y+h), (255,0,0),2)
             Data_word.append([level, page_num, block_num, par_num, line_num, word_num,x, y, w, h, word])
+            BB_level_4_5.append([level, page_num, block_num, par_num, line_num, word_num,x, y, w, h, word])
             # print("BB use:",x, y, w, h, word)
             print('\n')
 
@@ -184,20 +136,6 @@ for i, word in enumerate(image_data['text']):
     iterate = iterate + 1
 
 ## Not use 
-print("Data_QR",'\n')
-print(Data_QR,'\n')
-
-print("Data_Scan",'\n')
-print(Data_Scan,'\n')
-
-print("Data_TF",'\n')
-print(Data_TF,'\n')
-
-print("Data_Logo",'\n')
-print(Data_Logo,'\n')
-
-print("Data_Payment_type",'\n')
-print(Data_Payment_type,'\n')
 
 print("Data_bb_notuses",'\n')
 print(Data_bb_notuses,'\n')
@@ -211,6 +149,26 @@ print(Data_word,'\n')
 print("Data_BB",'\n')
 print(Data_BB)
 
+print('\n')
+print("Level 4 and 5")
+AA = []
+string_a = " "
+
+for i in BB_level_4_5:
+    if i[0] == 4:
+        if string_a == " ":
+            string_a = " "
+            AA.append(string_a)
+        else:
+            AA.append(string_a)
+            string_a = " "
+
+    if i[0] == 5:
+        string_a = string_a + i[11]
+
+
+
+print('\n')
 ## overall element in data image 
 print('data_overall_image', '\n')
 for i in data_overall_image:
