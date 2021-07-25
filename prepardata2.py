@@ -58,24 +58,24 @@ def eslipType_krungsri (data):
 
 
 def concatStringData(data_img, type_slip):
-    print(data_img)
-    print(type_slip)
+    # print(data_img)
+    # print(type_slip)
     range_data = len(data_img)
-    print(range_data)
+    # print(range_data)
     CC = []
     if range_data == 11 and type_slip == "QR":
         correct_data = ""
         for i,word in enumerate(data_img):
             if i == 3:
                 correct_data = correct_data + word
-                print("A",i,word, correct_data)
+                # print("A",i,word, correct_data)
             if i == 4:
                 
                 correct_data = correct_data + word
-                print("B",i,word, correct_data)
+                # print("B",i,word, correct_data)
                 CC.append(correct_data)
             if i != 3 and i != 4:
-                print("C",i,word)
+                # print("C",i,word)
                 CC.append(word)
 
     elif range_data == 8 and type_slip == "TF":
@@ -83,14 +83,14 @@ def concatStringData(data_img, type_slip):
         for i,word in enumerate(data_img):
             if i == 3:
                 correct_data = correct_data + word
-                print("A",i,word, correct_data)
+                # print("A",i,word, correct_data)
             if i == 4:
                 
                 correct_data = correct_data + word
-                print("B",i,word, correct_data)
+                # print("B",i,word, correct_data)
                 CC.append(correct_data)
             if i != 3 and i != 4:
-                print("C",i,word)
+                # print("C",i,word)
                 CC.append(word)
 
     elif range_data == 9 and type_slip == "Scan":
@@ -98,16 +98,20 @@ def concatStringData(data_img, type_slip):
         for i,word in enumerate(data_img):
             if i == 3:
                 correct_data = correct_data + word
-                print("A",i,word, correct_data)
+                # print("A",i,word, correct_data)
             if i == 4:
                 
                 correct_data = correct_data + word
-                print("B",i,word, correct_data)
+                # print("B",i,word, correct_data)
                 CC.append(correct_data)
             if i != 3 and i != 4:
-                print("C",i,word)
+                # print("C",i,word)
                 CC.append(word)
     return CC; 
+
+
+
+
 
  
 
@@ -123,6 +127,8 @@ data_overall_image = []
 
 ## Check BB level 4 and 5 ## 
 BB_level_4_5 = []
+
+ 
 
 ## Create new dict key 
 image_data["logoWord"] = []
@@ -154,7 +160,7 @@ for i, word in enumerate(image_data['text']):
     page_num = image_data['page_num'][i]
     not_use_logo = image_data['logoWord'][i]
 
-    data_overall_image.append([level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, word])
+    # data_overall_image.append([level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, word])
 
 
     if level == 4 or level == 5:
@@ -164,6 +170,7 @@ for i, word in enumerate(image_data['text']):
             cv2.rectangle(img, (x,y), (x+w, y+h), (0,0,255),1)
             Data_BB.append([level, page_num, block_num, par_num, line_num, word_num,x, y, w, h, word])
             BB_level_4_5.append([level, page_num, block_num, par_num, line_num, word_num,x, y, w, h, word])
+            data_overall_image.append([level, page_num, block_num, par_num, line_num, word_num,x, y, w, h, not_use_logo, word])
             # print("word use:",x, y, w, h, word)
 
         ## Data_word
@@ -171,17 +178,16 @@ for i, word in enumerate(image_data['text']):
             cv2.rectangle(img, (x,y), (x+w, y+h), (255,0,0),1)
             Data_word.append([level, page_num, block_num, par_num, line_num, word_num,x, y, w, h, word])
             BB_level_4_5.append([level, page_num, block_num, par_num, line_num, word_num,x, y, w, h, word])
+            data_overall_image.append([level, page_num, block_num, par_num, line_num, word_num,x, y, w, h, not_use_logo, word])
             # print("BB use:",x, y, w, h, word)
+        else:
+            data_overall_image.append([level, page_num, block_num, par_num, line_num, word_num,x, y, w, h, not_use_logo, word])
+ 
 
-    ## Data_bb_notuses
     else:
         Data_bb_notuses.append([level, page_num, block_num, par_num, line_num, word_num,x, y, w, h, word])
 
-    iterate = iterate + 1
 
-
-print('\n')
-print("Level 4 and 5")
 AA = []
 BB = []
  
@@ -207,33 +213,67 @@ for i in AA:
 eslipType = eslipType_krungsri(image_data)
 CC = concatStringData(BB, eslipType[0])
 
+for i in data_overall_image:
+    print(i)
 
-if len(CC) == 0:
-    print(eslipType)
-    print("BB: ",BB, len(BB))
-elif len(CC) > 0:
-    print(eslipType)
-    print("CC: ",CC, len(CC))
+data_with_label = []
+passing = 0
+
+for i,data in enumerate(data_overall_image):
+    
+    level = data[0]
+    page_num = data[1]
+    block_num = data[2]
+    par_num = data[3]
+    line_num = data[4]
+    word_num = data[5]
+    x = data[6]
+    y = data[7]
+    w = data[8]
+    h = data[9]
+    not_use_logo = data[10]
+    word = data[11]
  
-############
+    if eslipType[0] == "QR":
+        if data[10] == 1:
+            ## 0 = ไม่ใช้งาน ## 
+            label = 0 
+            # print("eslipType == QR: ",[level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
+            data_with_label.append([level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
 
- ## Scan == 8 
- ## QR == 10 
- ## TF == 
+        elif data[10] == 0:
+            label_categorical = [["Timing",1], ["UserTF",2], ["AccountTF",3], ["Amount",4], ["RefCode",5]]
+            alert = []
 
-
-# print('\n')
-# ## overall element in data image 
-# print('data_overall_image', '\n')
-# for i in data_overall_image:
-#     print(i)
-
-
-# print(image_data)
-# find word ## 
-# findWord(image_data)
+            if data[0] == 4:
+                label = 0
+                print(passing)
+                print("data[0] == 4: ",[level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
+                data_with_label.append([level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
+            
+            elif data[0] == 5:
+                label = label_categorical[passing][1]
+                print(passing)
+                print("data[0] == 5: ",[level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
+                data_with_label.append([level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
+                alert.append(1)
+            
+            try:
+                print(alert[0])
+                try:
+                    data_overall_image[i + 1][0]
+                    print(data[0], data_overall_image[i+1][0])
+                    if data[0] == 5 and data_overall_image[i + 1][0] == 4:
+                        print("Try: ",data[0], data_overall_image[i + 1][0])
+                        passing = passing + 1
+                        print("passing",passing)
+                except:
+                    print("Over array")
+                    pass
+            except:
+                print("No alert")
+                pass
  
-
 
 
 cv2.imshow("window", img)
