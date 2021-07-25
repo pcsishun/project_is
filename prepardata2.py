@@ -14,14 +14,15 @@ img_convert = cv2.imread('./image_krungsri/test3.jpg') # img paths
 
 # convert into gray scale.
 gray_scale = cv2.cvtColor(img_convert,cv2.COLOR_RGB2GRAY)
+
 # convert gray scale to black and with by using threshold.
 thresh, img_black_white  = cv2.threshold(gray_scale, 120, 240, cv2.THRESH_BINARY)
+
 # Save image 
 cv2.imwrite('useImage.jpg', img_black_white)
-
-
 img = cv2.imread('./useImage.jpg')
 image_data = pytesseract.image_to_data(img, output_type=Output.DICT, lang="eng+tha")
+
 
 def findWord(data):
     for i in data:
@@ -108,10 +109,7 @@ def concatStringData(data_img, type_slip):
                 CC.append(word)
     return CC; 
 
-
-iterate = 0
-eslipType = eslipType_krungsri(image_data)
-
+ 
 
 ## Word and BB not use ## 
 Data_bb_notuses = []
@@ -119,8 +117,6 @@ Data_bb_notuses = []
 ## Word and BB use ## 
 Data_word = []
 Data_BB = []
-
- 
 
 ## Overall data in image ## 
 data_overall_image = []
@@ -144,9 +140,6 @@ for i, word in enumerate(image_data['text']):
         image_data['logoWord'].append(0)
  
 
-
-
-        
 
 for i, word in enumerate(image_data['text']):
     x = image_data['left'][i]
@@ -184,8 +177,6 @@ for i, word in enumerate(image_data['text']):
     else:
         Data_bb_notuses.append([level, page_num, block_num, par_num, line_num, word_num,x, y, w, h, word])
 
-
-        
     iterate = iterate + 1
 
 
@@ -193,7 +184,7 @@ print('\n')
 print("Level 4 and 5")
 AA = []
 BB = []
-CC = []
+ 
 string_a = ""
 
 for i in BB_level_4_5:
@@ -213,7 +204,7 @@ for i in AA:
         BB.append(i)
 
 ##################
-
+eslipType = eslipType_krungsri(image_data)
 CC = concatStringData(BB, eslipType[0])
 
 
@@ -230,10 +221,6 @@ elif len(CC) > 0:
  ## QR == 10 
  ## TF == 
 
-
-
-
- 
 
 # print('\n')
 # ## overall element in data image 
