@@ -216,6 +216,11 @@ CC = concatStringData(BB, eslipType[0])
 for i in data_overall_image:
     print(i)
 
+print('\n')
+for i in BB:
+    print(i)
+
+print('\n')
 data_with_label = []
 passing = 0
 
@@ -267,11 +272,11 @@ for i,data in enumerate(data_overall_image):
                         print("Try: ",data[0], data_overall_image[i + 1][0])
                         passing = passing + 1
                         print("passing",passing)
-                except:
-                    print("Over array")
+                except :
+                    # print("Over array")
                     pass
-            except:
-                print("No alert")
+            except :
+                # print("No alert")
                 pass
  
 
