@@ -224,62 +224,71 @@ print('\n')
 data_with_label = []
 passing = 0
 
-for i,data in enumerate(data_overall_image):
+def tagLabelToData(eslipType, data_overall_image):
+
+    data_with_label = []
+    passing = 0
+
+    for i,data in enumerate(data_overall_image):
+        
+        level = data[0]
+        page_num = data[1]
+        block_num = data[2]
+        par_num = data[3]
+        line_num = data[4]
+        word_num = data[5]
+        x = data[6]
+        y = data[7]
+        w = data[8]
+        h = data[9]
+        not_use_logo = data[10]
+        word = data[11]
     
-    level = data[0]
-    page_num = data[1]
-    block_num = data[2]
-    par_num = data[3]
-    line_num = data[4]
-    word_num = data[5]
-    x = data[6]
-    y = data[7]
-    w = data[8]
-    h = data[9]
-    not_use_logo = data[10]
-    word = data[11]
- 
-    if eslipType[0] == "QR":
-        if data[10] == 1:
-            ## 0 = ไม่ใช้งาน ## 
-            label = 0 
-            # print("eslipType == QR: ",[level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
-            data_with_label.append([level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
-
-        elif data[10] == 0:
-            label_categorical = [["Timing",1], ["UserTF",2], ["AccountTF",3], ["Amount",4], ["RefCode",5]]
-            alert = []
-
-            if data[0] == 4:
-                label = 0
-                print(passing)
-                print("data[0] == 4: ",[level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
+        if eslipType[0] == "QR":
+            if data[10] == 1:
+                ## 0 = ไม่ใช้งาน ## 
+                label = 0 
+                # print("eslipType == QR: ",[level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
                 data_with_label.append([level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
-            
-            elif data[0] == 5:
-                label = label_categorical[passing][1]
-                print(passing)
-                print("data[0] == 5: ",[level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
-                data_with_label.append([level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
-                alert.append(1)
-            
-            try:
-                print(alert[0])
+
+            elif data[10] == 0:
+                label_categorical = [["Timing",1], ["UserTF",2], ["AccountTF",3], ["Amount",4], ["RefCode",5], ["RefCode",6], ["RefCode",7], ["RefCode",8], ["RefCode",9], ["RefCode",10]
+                , ["RefCode",11], ["RefCode",12], ["RefCode",13], ["RefCode",14], ["RefCode",15]]
+                alert = []
+
+                if data[0] == 4:
+                    label = 0
+                    print(passing)
+                    print("data[0] == 4: ",[level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
+                    data_with_label.append([level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
+                
+                elif data[0] == 5:
+                    label = label_categorical[passing][1]
+                    print(passing)
+                    print("data[0] == 5: ",[level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
+                    data_with_label.append([level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
+                    alert.append(1)
+                
                 try:
-                    data_overall_image[i + 1][0]
-                    print(data[0], data_overall_image[i+1][0])
-                    if data[0] == 5 and data_overall_image[i + 1][0] == 4:
-                        print("Try: ",data[0], data_overall_image[i + 1][0])
-                        passing = passing + 1
-                        print("passing",passing)
+                    print(alert[0])
+                    try:
+                        data_overall_image[i + 1][0]
+                        print(data[0], data_overall_image[i+1][0])
+                        if data[0] == 5 and data_overall_image[i + 1][0] == 4:
+                            print("Try: ",data[0], data_overall_image[i + 1][0])
+                            passing = passing + 1
+                            print("passing",passing)
+                    except :
+                        # print("Over array")
+                        pass
                 except :
-                    # print("Over array")
+                    # print("No alert")
                     pass
-            except :
-                # print("No alert")
-                pass
- 
+    return data_with_label
 
+print('\n')
+for i in data_with_label:
+    print(i)
 
 cv2.imshow("window", img)
 cv2.waitKey(0)
