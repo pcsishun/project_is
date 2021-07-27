@@ -6,6 +6,11 @@ import os
 pytesseract.tesseract_cmd = r'C:\\Program Files\Tesseract-OCR\tesseract.exe' ## change path 
 
 
+#################################################################################
+#################################################################################
+#################################################################################
+#################################################################################
+
 def findWord(data):
     for i in data:
         print(i)
@@ -249,28 +254,256 @@ def departDataOfImage(image_data):
     
     return perfectArray, countingArray, BB_level_4_5, data_overall_image
 
+
+
+def finishCreateLabel(data_with_label, perfectArray, eslipType):
+
+    arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
+    rangeArray = len(perfectArray)
+    finishData = []
+
+    print('rangeArray:', rangeArray)
+
+    for index, arrays in enumerate(data_with_label):
+
+
+        arrayType = arrays[0]
+        level = arrays[1]
+        page_num = arrays[2]
+        block_num = arrays[3]
+        par_num = arrays[4]
+        line_num = arrays[5]
+        word_num = arrays[6]
+        x = arrays[7]
+        y = arrays[8]
+        w = arrays[9]
+        h = arrays[10]
+        not_use_logo = arrays[11]
+        word = arrays[12]
+        tagingRow = arrays[13]
+
+        
+        if eslipType[0] == "QR":
+
+            if rangeArray == 11:
+                # arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
+                if arrays[13] == 1:
+                    labeldata = arrayLabelName[0]
+                    indexLabel = 1
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+                
+                elif arrays[13] == 2:
+                    labeldata = arrayLabelName[1]
+                    indexLabel = 2
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 3:
+                    labeldata = arrayLabelName[2]
+                    indexLabel = 3
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 9:
+                    labeldata = arrayLabelName[3]
+                    indexLabel = 4
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 11:
+                    labeldata = arrayLabelName[4]
+                    indexLabel = 5
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+                
+                else:
+                    labeldata = "NotUse"
+                    indexLabel = 0
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+    
+            elif rangeArray == 10:
+                # arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
+                if arrays[13] == 1:
+                    labeldata = arrayLabelName[0]
+                    indexLabel = 1
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+                
+                elif arrays[13] == 2:
+                    labeldata = arrayLabelName[1]
+                    indexLabel = 2
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 3:
+                    labeldata = arrayLabelName[2]
+                    indexLabel = 3
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 8:
+                    labeldata = arrayLabelName[3]
+                    indexLabel = 4
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 10:
+                    labeldata = arrayLabelName[4]
+                    indexLabel = 5
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                else:
+                    labeldata = "NotUse"
+                    indexLabel = 0
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+            else:
+                print("error")
+                break
+
+        elif eslipType[0] == "Scan":
+            if rangeArray == 8:
+                # arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
+                if arrays[13] == 1:
+                    labeldata = arrayLabelName[0]
+                    indexLabel = 1
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+                
+                elif arrays[13] == 2:
+                    labeldata = arrayLabelName[1]
+                    indexLabel = 2
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 3:
+                    labeldata = arrayLabelName[2]
+                    indexLabel = 3
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 6:
+                    labeldata = arrayLabelName[3]
+                    indexLabel = 4
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 8:
+                    labeldata = arrayLabelName[4]
+                    indexLabel = 5
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+                
+                else:
+                    labeldata = "NotUse"
+                    indexLabel = 0
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+    
+            elif rangeArray == 9:
+                # arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
+                if arrays[13] == 1:
+                    labeldata = arrayLabelName[0]
+                    indexLabel = 1
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+                
+                elif arrays[13] == 2:
+                    labeldata = arrayLabelName[1]
+                    indexLabel = 2
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 3:
+                    labeldata = arrayLabelName[2]
+                    indexLabel = 3
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 7:
+                    labeldata = arrayLabelName[3]
+                    indexLabel = 4
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 9:
+                    labeldata = arrayLabelName[4]
+                    indexLabel = 5
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                else:
+                    labeldata = "NotUse"
+                    indexLabel = 0
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+            else:
+                print("error")
+                break
+
+        elif eslipType[0] == "TF":
+            if rangeArray == 8:
+                # arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
+                if arrays[13] == 1:
+                    labeldata = arrayLabelName[0]
+                    indexLabel = 1
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+                
+                elif arrays[13] == 2:
+                    labeldata = arrayLabelName[1]
+                    indexLabel = 2
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 3:
+                    labeldata = arrayLabelName[2]
+                    indexLabel = 3
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 8:
+                    labeldata = arrayLabelName[3]
+                    indexLabel = 4
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 9:
+                    labeldata = arrayLabelName[4]
+                    indexLabel = 5
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+                
+                else:
+                    labeldata = "NotUse"
+                    indexLabel = 0
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+    
+            elif rangeArray == 7:
+                # arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
+                if arrays[13] == 1:
+                    labeldata = arrayLabelName[0]
+                    indexLabel = 1
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+                
+                elif arrays[13] == 2:
+                    labeldata = arrayLabelName[1]
+                    indexLabel = 2
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 3:
+                    labeldata = arrayLabelName[2]
+                    indexLabel = 3
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 7:
+                    labeldata = arrayLabelName[3]
+                    indexLabel = 4
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                elif arrays[13] == 8:
+                    labeldata = arrayLabelName[4]
+                    indexLabel = 5
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+                else:
+                    labeldata = "NotUse"
+                    indexLabel = 0
+                    finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
+
+            else:
+                print("error")
+                break
+    
+    return finishData 
+    
+
 #################################################################################
 #################################################################################
 #################################################################################
 #################################################################################
 
-
- ## Scan == 8 
- ## QR == 10 
- ## TF == 7 
-
-## โหลดรูปมาจัดทำให้อย่ในรูปแบบของ black and white 
-
-# test3 --> QR 2 บรรทัด
-# test4 --> QR 1 บรรทัด
-
-# test16 --> Scan to pay 2 บรรทัด
-# test_1 --> Scan to pay 1 บรรทัด
-
-# test9 --> TF 2 บรรทัด
-# test2 --> TF 1 บรรทัด
-
-img_convert = cv2.imread('./image_krungsri/test9.jpg') # img paths  
+ 
+img_convert = cv2.imread('./image_krungsri/test_1.jpg') # img paths  
 
 # convert into gray scale.
 gray_scale = cv2.cvtColor(img_convert,cv2.COLOR_RGB2GRAY)
@@ -284,6 +517,7 @@ img = cv2.imread('./useImage.jpg')
 image_data = pytesseract.image_to_data(img, output_type=Output.DICT, lang="eng+tha")
 
 ################## Start using function ##################
+
 data_of_image = departDataOfImage(image_data)
 data_overall_image = data_of_image[3]
 perfectArray = data_of_image[0]
@@ -293,287 +527,16 @@ countingArray = data_of_image[1]
 eslipType = eslipType_krungsri(image_data)
 CC = concatStringData(perfectArray, eslipType[0])
 data_with_label = tagLabelToData(eslipType, data_overall_image)
-
-#################################################################################
-#################################################################################
-
-# eslipType = eslipType_krungsri(image_data)
-arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
-rangeArray = len(perfectArray)
-finishData = []
-
-print('rangeArray:', rangeArray)
-
-for index, arrays in enumerate(data_with_label):
-
-
-    arrayType = arrays[0]
-    level = arrays[1]
-    page_num = arrays[2]
-    block_num = arrays[3]
-    par_num = arrays[4]
-    line_num = arrays[5]
-    word_num = arrays[6]
-    x = arrays[7]
-    y = arrays[8]
-    w = arrays[9]
-    h = arrays[10]
-    not_use_logo = arrays[11]
-    word = arrays[12]
-    tagingRow = arrays[13]
-
-    
-    if eslipType[0] == "QR":
-
-        if rangeArray == 11:
-            # arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
-            if arrays[13] == 1:
-                labeldata = arrayLabelName[0]
-                indexLabel = 1
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-            
-            elif arrays[13] == 2:
-                labeldata = arrayLabelName[1]
-                indexLabel = 2
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 3:
-                labeldata = arrayLabelName[2]
-                indexLabel = 3
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 9:
-                labeldata = arrayLabelName[3]
-                indexLabel = 4
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 11:
-                labeldata = arrayLabelName[4]
-                indexLabel = 5
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-            
-            else:
-                labeldata = "NotUse"
-                indexLabel = 0
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
- 
-        elif rangeArray == 10:
-            # arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
-            if arrays[13] == 1:
-                labeldata = arrayLabelName[0]
-                indexLabel = 1
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-            
-            elif arrays[13] == 2:
-                labeldata = arrayLabelName[1]
-                indexLabel = 2
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 3:
-                labeldata = arrayLabelName[2]
-                indexLabel = 3
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 8:
-                labeldata = arrayLabelName[3]
-                indexLabel = 4
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 10:
-                labeldata = arrayLabelName[4]
-                indexLabel = 5
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            else:
-                labeldata = "NotUse"
-                indexLabel = 0
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-        else:
-            print("error")
-            break
-
-    elif eslipType[0] == "Scan":
-        if rangeArray == 8:
-            # arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
-            if arrays[13] == 1:
-                labeldata = arrayLabelName[0]
-                indexLabel = 1
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-            
-            elif arrays[13] == 2:
-                labeldata = arrayLabelName[1]
-                indexLabel = 2
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 3:
-                labeldata = arrayLabelName[2]
-                indexLabel = 3
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 6:
-                labeldata = arrayLabelName[3]
-                indexLabel = 4
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 8:
-                labeldata = arrayLabelName[4]
-                indexLabel = 5
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-            
-            else:
-                labeldata = "NotUse"
-                indexLabel = 0
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
- 
-        elif rangeArray == 9:
-            # arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
-            if arrays[13] == 1:
-                labeldata = arrayLabelName[0]
-                indexLabel = 1
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-            
-            elif arrays[13] == 2:
-                labeldata = arrayLabelName[1]
-                indexLabel = 2
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 3:
-                labeldata = arrayLabelName[2]
-                indexLabel = 3
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 7:
-                labeldata = arrayLabelName[3]
-                indexLabel = 4
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 9:
-                labeldata = arrayLabelName[4]
-                indexLabel = 5
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            else:
-                labeldata = "NotUse"
-                indexLabel = 0
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-        else:
-            print("error")
-            break
-
-    elif eslipType[0] == "TF":
-        if rangeArray == 8:
-            # arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
-            if arrays[13] == 1:
-                labeldata = arrayLabelName[0]
-                indexLabel = 1
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-            
-            elif arrays[13] == 2:
-                labeldata = arrayLabelName[1]
-                indexLabel = 2
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 3:
-                labeldata = arrayLabelName[2]
-                indexLabel = 3
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 8:
-                labeldata = arrayLabelName[3]
-                indexLabel = 4
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 9:
-                labeldata = arrayLabelName[4]
-                indexLabel = 5
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-            
-            else:
-                labeldata = "NotUse"
-                indexLabel = 0
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
- 
-        elif rangeArray == 7:
-            # arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
-            if arrays[13] == 1:
-                labeldata = arrayLabelName[0]
-                indexLabel = 1
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-            
-            elif arrays[13] == 2:
-                labeldata = arrayLabelName[1]
-                indexLabel = 2
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 3:
-                labeldata = arrayLabelName[2]
-                indexLabel = 3
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 7:
-                labeldata = arrayLabelName[3]
-                indexLabel = 4
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            elif arrays[13] == 8:
-                labeldata = arrayLabelName[4]
-                indexLabel = 5
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-            else:
-                labeldata = "NotUse"
-                indexLabel = 0
-                finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
-
-        else:
-            print("error")
-            break
-
-    
-
-
-
-
-#################################################################################
-#################################################################################
+finishData = finishCreateLabel(data_with_label, perfectArray, eslipType)
  
 ################## print data ##################
 
-# print("Count array",len(perfectArray))
-
-# for i, word in enumerate(countingArray):
-#     print("countingArray index: ",i ,": ",word)
-
-
-
-# print('\n')
-
+  
 print(eslipType[0])
-
-# for i, word in enumerate(perfectArray):
-#     print("perfectArray index: ",i ,": ",word)
-
-# print('\n')
-# for i, word in enumerate(CC):
-#     print("CC index: ",i ,": ",word)
-
-print('\n')
-for i in data_with_label:
-    print("data_with_label: ",i)
 
 print('\n')
 for i in finishData:
     print("finishData: ",i)
-
-print('\n')
-for i, word in enumerate(CC):
-    print("perfectArray index: ",i ,": ",word)
-
 
 
 ######################################################
