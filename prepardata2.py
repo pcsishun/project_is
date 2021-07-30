@@ -15,17 +15,20 @@ def findWord(data):
     for i in data:
         print(i)
 
-def eslipType_krungsri (data):
+def eslipType_krungsri(data):
 
     preType = []
     preType2 = []
     slipType = []
+    eslipTypeArray = ['Scan','QR']
 
-    for i, word in enumerate(data['text']):
-        x = image_data['left'][i]
-        y = image_data['top'][i]
-        if 50 < x < 600 and 270 < y < 360:
-            preType.append(word)
+    for word in data['text']:
+        if word == "Scan":
+            preType.append('Scan')
+            break
+        elif word == "QR":
+            preType.append('QR')
+            break
     
     for i in preType:
         if i == "Scan":
@@ -181,19 +184,33 @@ def departDataOfImage(image_data):
     perfectArray = []
     
     string_a = ""
-
+    passingRemark = 0
 
     for i, word in enumerate(image_data['text']):
         x = image_data['left'][i]
         y = image_data['top'][i]
         w = image_data['width'][i]
         h = image_data['height'][i]
-
-        if 0 <= x < 650 and 0 <= y < 357:  # this
-            image_data['logoWord'].append(1)
-        else:
-            image_data['logoWord'].append(0)
     
+        arrayLogoStop = ['01','02','03','04','05','06','07','08',
+        '09','10','11','12','13','14','15','16',
+        '17','18','19','20','21','22','23','24',
+        '25','26','27','28','29','30','31']
+        
+        # print(passingRemark)
+        if passingRemark == 0:
+            if word in arrayLogoStop:
+                image_data['logoWord'].append(0)
+                passingRemark = passingRemark + 1
+            
+            elif word not in arrayLogoStop:
+                image_data['logoWord'].append(1)
+
+        elif passingRemark > 0:
+            image_data['logoWord'].append(0)
+        
+
+ 
 
 
     for i, word in enumerate(image_data['text']):
@@ -251,7 +268,10 @@ def departDataOfImage(image_data):
     for i in countingArray:
         if i != "" and i != " " and i != "  ":
             perfectArray.append(i)
-    
+
+    print(image_data)
+    print(len(image_data['logoWord']))
+    print(len(image_data['text']))
     return perfectArray, countingArray, BB_level_4_5, data_overall_image
 
 
@@ -442,7 +462,7 @@ def finishCreateLabel(data_with_label, perfectArray, eslipType):
                     indexLabel = 3
                     finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
 
-                elif arrays[13] == 8:
+                elif arrays[13] == 7:
                     labeldata = arrayLabelName[3]
                     indexLabel = 4
                     finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
@@ -475,7 +495,7 @@ def finishCreateLabel(data_with_label, perfectArray, eslipType):
                     indexLabel = 3
                     finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
 
-                elif arrays[13] == 7:
+                elif arrays[13] == 6:
                     labeldata = arrayLabelName[3]
                     indexLabel = 4
                     finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
@@ -503,7 +523,7 @@ def finishCreateLabel(data_with_label, perfectArray, eslipType):
 #################################################################################
 
  
-img_convert = cv2.imread('./image_krungsri/test_1.jpg') # img paths  
+img_convert = cv2.imread('./image_krungsri/test4.jpg') # img paths  
 
 # convert into gray scale.
 gray_scale = cv2.cvtColor(img_convert,cv2.COLOR_RGB2GRAY)
@@ -531,12 +551,18 @@ finishData = finishCreateLabel(data_with_label, perfectArray, eslipType)
  
 ################## print data ##################
 
+
+# cv2.rectangle(img, (0,0), (650, 357), (255,50,255), 2)
   
 print(eslipType[0])
 
 print('\n')
 for i in finishData:
     print("finishData: ",i)
+
+print('\n')
+for i in perfectArray:
+    print("perfectArray: ",i)
 
 
 ######################################################
