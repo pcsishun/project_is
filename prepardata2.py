@@ -265,9 +265,9 @@ def departDataOfImage(image_data):
         if i != "" and i != " " and i != "  ":
             perfectArray.append(i)
 
-    print(image_data)
-    print(len(image_data['logoWord']))
-    print(len(image_data['text']))
+    # print(image_data)
+    # print(len(image_data['logoWord']))
+    # print(len(image_data['text']))
     return perfectArray, countingArray, BB_level_4_5, data_overall_image
 
 
@@ -278,7 +278,7 @@ def finishCreateLabel(data_with_label, perfectArray, eslipType):
     rangeArray = len(perfectArray)
     finishData = []
 
-    print('rangeArray:', rangeArray)
+    # print('rangeArray:', rangeArray)
 
     for index, arrays in enumerate(data_with_label):
 
@@ -367,7 +367,7 @@ def finishCreateLabel(data_with_label, perfectArray, eslipType):
                     finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
 
             else:
-                print("error")
+                # print("error")
                 break
 
         elif eslipType[0] == "Scan":
@@ -437,7 +437,7 @@ def finishCreateLabel(data_with_label, perfectArray, eslipType):
                     finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
 
             else:
-                print("error")
+                # print("error")
                 break
 
         elif eslipType[0] == "TF":
@@ -507,11 +507,140 @@ def finishCreateLabel(data_with_label, perfectArray, eslipType):
                     finishData.append([arrayType, level, page_num, block_num, par_num, line_num, word_num, x, y, w, h, not_use_logo, word, tagingRow, labeldata, indexLabel])
 
             else:
-                print("error")
+                # print("error")
                 break
     
     return finishData 
     
+
+
+def extractingArea(data_with_finish_label):
+
+    area_record_data = []
+
+    for i,data in enumerate(data_with_finish_label):
+        try:
+            if data[14] != data_with_finish_label[i +1][14]:
+                if data_with_finish_label[i +1][14] == "Timing":
+                    area_record_data.append(["Area", 
+                    data[7], 
+                    data[8], 
+                    data[9], 
+                    data[10],
+                    "Timing"])
+                elif data_with_finish_label[i +1][14] == "Name":
+                    area_record_data.append(["Area", 
+                    data[7], 
+                    data[8], 
+                    data[9], 
+                    data[10],
+                    "Name"])
+                elif data_with_finish_label[i +1][14] == "Account":
+                    area_record_data.append(["Area", 
+                    data[7], 
+                    data[8], 
+                    data[9], 
+                    data[10],
+                    "Account"])
+                elif data_with_finish_label[i +1][14] == "Amount":
+                    area_record_data.append(["Area", 
+                    data[7], 
+                    data[8], 
+                    data[9], 
+                    data[10],
+                    "Amount"])
+                elif data_with_finish_label[i +1][14] == "RefCode":
+                    area_record_data.append(["Area", 
+                    data[7], 
+                    data[8], 
+                    data[9], 
+                    data[10],
+                    "RefCode"])
+        except :
+            pass
+    
+    return area_record_data
+
+
+def data_area_word(data_with_finish_label, data_extractingArea):
+
+    data_record_use = []
+    data_concat_word = [] ## return 
+    count_loop = 0
+
+    for i in data_with_finish_label:
+        if i[14] != "NotUse":
+            for j,selectionArea in enumerate(data_extractingArea):
+                if selectionArea[5] == i[14]:
+                    # print(i[14], data_extractingArea[j][5])
+                    data_record_use.append([i[0],
+                    i[1],
+                    i[2],
+                    i[3],
+                    i[4],
+                    i[5],
+                    data_extractingArea[j][1],
+                    data_extractingArea[j][2],
+                    data_extractingArea[j][3],
+                    data_extractingArea[j][4],
+                    i[12],
+                    i[14]])
+
+    for i in data_record_use:
+        
+        stringCon = ""
+
+        if i[11] == "Timing" and count_loop == 0:
+            for j in data_record_use:
+                if j[11] == "Timing":
+                    stringCon = stringCon + j[10]
+    
+
+            data_concat_word.append([i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], stringCon, i[11]])
+            count_loop += 1
+        
+
+
+        if i[11] == "Name"  and count_loop == 1:
+            for j in data_record_use:
+                if j[11] == "Name":
+                    stringCon = stringCon + j[10]
+
+
+            data_concat_word.append([i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], stringCon, i[11]])
+            count_loop += 1
+
+
+        if i[11] == "Account" and count_loop == 2:
+            for j in data_record_use:
+                if j[11] == "Account":
+                    stringCon = stringCon + j[10]
+
+
+            data_concat_word.append([i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], stringCon, i[11]])
+            count_loop += 1
+
+
+        if i[11] == "Amount" and count_loop == 3:
+            for j in data_record_use:
+                if j[11] == "Amount":
+                    stringCon = stringCon + j[10]
+
+            data_concat_word.append([i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], stringCon, i[11]])
+            count_loop += 1
+
+
+        if i[11] == "RefCode" and count_loop == 4:
+            for j in data_record_use:
+                if j[11] == "RefCode":
+                    stringCon = stringCon + j[10]
+
+            data_concat_word.append([i[0], i[1], i[2], i[3], i[4], i[5], i[6], i[7], i[8], i[9], stringCon, i[11]])
+            count_loop += 1
+
+    return data_concat_word
+
+
 
 #################################################################################
 #################################################################################
@@ -519,7 +648,7 @@ def finishCreateLabel(data_with_label, perfectArray, eslipType):
 #################################################################################
 
  
-img_convert = cv2.imread('./image_krungsri/test_11.jpg') # img paths  
+img_convert = cv2.imread('./image_krungsri/test_1.jpg') # img paths  
 
 # convert into gray scale.
 gray_scale = cv2.cvtColor(img_convert,cv2.COLOR_RGB2GRAY)
@@ -532,34 +661,38 @@ cv2.imwrite('useImage.jpg', img_black_white)
 img = cv2.imread('./useImage.jpg')
 image_data = pytesseract.image_to_data(img, output_type=Output.DICT, lang="eng+tha")
 
-################## Start using function ##################
 
 data_of_image = departDataOfImage(image_data)
 data_overall_image = data_of_image[3]
 perfectArray = data_of_image[0]
 countingArray = data_of_image[1]
 
+################## Start using function ##################
 
 eslipType = eslipType_krungsri(image_data)
 CC = concatStringData(perfectArray, eslipType[0])
 data_with_label = tagLabelToData(eslipType, data_overall_image)
-finishData = finishCreateLabel(data_with_label, perfectArray, eslipType)
+data_with_finish_label = finishCreateLabel(data_with_label, perfectArray, eslipType)
+data_extractingArea = extractingArea(data_with_finish_label)
+data_concat_word = data_area_word(data_with_finish_label, data_extractingArea)
+
  
-################## print data ##################
+################## print data and debug area ##################
 
+ 
+# print(data_extractingArea)
+# print('\n')
+# for i in data_with_finish_label:
+#     print("data_with_finish_label: ",i)
 
-# cv2.rectangle(img, (0,0), (650, 357), (255,50,255), 2)
-  
-print(eslipType[0])
+# print('\n')
+# for i in data_extractingArea:
+#     print("data_extractingArea: ",i)
 
 print('\n')
-for i in finishData:
-    print("finishData: ",i)
-
-print('\n')
-for i in perfectArray:
-    print("perfectArray: ",i)
-
+for i in data_concat_word:
+    print("data_concat_word: ",i)
+ 
 
 ######################################################
 cv2.imshow("window", img)
