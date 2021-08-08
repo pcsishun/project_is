@@ -5,11 +5,11 @@ import os
 
 pytesseract.tesseract_cmd = r'C:\\Program Files\Tesseract-OCR\tesseract.exe' ## change path 
 
+#################################################################################
+#################################################################################
+#################################################################################
+#################################################################################
 
-#################################################################################
-#################################################################################
-#################################################################################
-#################################################################################
 
 def findWord(data):
     for i in data:
@@ -48,10 +48,9 @@ def eslipType_krungsri(data):
 
 
 def concatStringData(data_img, type_slip):
-    # print(data_img)
-    # print(type_slip)
+
     range_data = len(data_img)
-    # print(range_data)
+
     CC = []
     if range_data == 11 and type_slip == "QR":
         correct_data = ""
@@ -126,7 +125,8 @@ def tagLabelToData(eslipType, data_overall_image):
             data_with_label.append([eslipType, level, page_num, block_num, par_num, line_num, word_num, x, y ,w, h, not_use_logo, word,  label])
         
         elif data[10] == 0:
-            label_categorical = [["1",1], ["2",2], ["3",3], ["4",4], ["5",5], ["6",6], ["7",7], ["8",8], ["9",9], ["10",10], ["11",11], ["12",12], ["13",13], ["14",14], ["15",15], ["16",16], ["17",17], ["18",18], ["19",19], ["20",20]]
+            label_categorical = [["1",1], ["2",2], ["3",3], ["4",4], ["5",5], ["6",6], ["7",7], ["8",8], ["9",9], ["10",10], ["11",11], ["12",12], 
+            ["13",13], ["14",14], ["15",15], ["16",16], ["17",17], ["18",18], ["19",19], ["20",20]]
             alert = []
             
             if data[0] == 4:
@@ -159,7 +159,6 @@ def tagLabelToData(eslipType, data_overall_image):
                 pass
 
     return data_with_label
-
 
 
 def departDataOfImage(image_data):
@@ -208,9 +207,6 @@ def departDataOfImage(image_data):
 
         elif passingRemark > 0:
             image_data['logoWord'].append(0)
-        
-
- 
 
 
     for i, word in enumerate(image_data['text']):
@@ -523,7 +519,7 @@ def finishCreateLabel(data_with_label, perfectArray, eslipType):
 #################################################################################
 
  
-img_convert = cv2.imread('./image_krungsri/test4.jpg') # img paths  
+img_convert = cv2.imread('./image_krungsri/test_11.jpg') # img paths  
 
 # convert into gray scale.
 gray_scale = cv2.cvtColor(img_convert,cv2.COLOR_RGB2GRAY)
