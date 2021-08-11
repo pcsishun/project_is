@@ -1,6 +1,8 @@
 import cv2
 from pytesseract import  pytesseract # download tesseract here https://tesseract-ocr.github.io/tessdoc/Downloads.html 
 from pytesseract import Output
+import numpy as np
+import pandas as pd
 import os 
 
 pytesseract.tesseract_cmd = r'C:\\Program Files\Tesseract-OCR\tesseract.exe' ## change path 
@@ -641,6 +643,67 @@ def data_area_word(data_with_finish_label, data_extractingArea):
     return data_concat_word
 
 
+def countingWord(data_concat_word):
+
+    arrayOfAscii = []
+    arrayOfNumber = ['1','2','3','4','5','6','7','8','9','0']
+    chatSymbol = []
+    countingLang = []
+
+    for code in range(ord('a'), ord('z') + 1):
+        arrayOfAscii.append(chr(code))
+    
+    # print(arrayOfAscii)
+
+    for i in data_concat_word:
+
+        CountEng = 0
+        CountTha = 0
+        CountNum = 0
+        CountSym = 0
+        textDetectLang = i[10]
+
+        for j in textDetectLang:
+            if j.isalpha():
+                j = j.lower()
+                if j in arrayOfAscii:
+                    CountEng += 1
+                    # print(j, 'Eng')
+                else:
+                    CountTha += 1
+                    # print(j, 'Tha')
+
+            elif j in arrayOfNumber:
+                CountNum += 1
+                # print(j, "Num")
+                
+            else:
+                CountSym += 1
+                # print(j,'Sym')
+        
+        countingLang.append([CountEng, CountTha, CountNum, CountSym])
+
+    return countingLang
+
+
+def arrayWithCount_Final(data_concat_word, texCount):
+
+    arrayPreToPandas = []
+
+    for i, word in enumerate(data_concat_word):
+        for j in word:
+            # print(j)
+            arrayPreToPandas.append(j)
+        for c in texCount[i]:
+            # print(c)
+            arrayPreToPandas.append(c)
+    
+
+    arrayPreToPandas = np.array(arrayPreToPandas)
+    arrayPreToPandas = arrayPreToPandas.reshape(5,16)
+
+    return arrayPreToPandas
+
 
 #################################################################################
 #################################################################################
@@ -648,7 +711,7 @@ def data_area_word(data_with_finish_label, data_extractingArea):
 #################################################################################
 
  
-img_convert = cv2.imread('./image_krungsri/test_1.jpg') # img paths  
+img_convert = cv2.imread('./image_krungsri/F1.jpg') # img paths  
 
 # convert into gray scale.
 gray_scale = cv2.cvtColor(img_convert,cv2.COLOR_RGB2GRAY)
@@ -675,24 +738,26 @@ data_with_label = tagLabelToData(eslipType, data_overall_image)
 data_with_finish_label = finishCreateLabel(data_with_label, perfectArray, eslipType)
 data_extractingArea = extractingArea(data_with_finish_label)
 data_concat_word = data_area_word(data_with_finish_label, data_extractingArea)
+texCount = countingWord(data_concat_word)
 
- 
+finsih_array = arrayWithCount_Final(data_concat_word, texCount)
 ################## print data and debug area ##################
 
  
-# print(data_extractingArea)
-# print('\n')
-# for i in data_with_finish_label:
-#     print("data_with_finish_label: ",i)
 
-# print('\n')
-# for i in data_extractingArea:
-#     print("data_extractingArea: ",i)
+for i in finsih_array:
+    print(i)
 
-print('\n')
-for i in data_concat_word:
-    print("data_concat_word: ",i)
- 
+
+
+################## text area ##################
+
+cv2.rectangle(img, (data_concat_word[0][6],data_concat_word[0][7]), (data_concat_word[0][6] + data_concat_word[0][8], data_concat_word[0][7] + data_concat_word[0][9]), (255,50,255), 3)
+cv2.rectangle(img, (data_concat_word[1][6],data_concat_word[1][7]), (data_concat_word[1][6] + data_concat_word[1][8], data_concat_word[1][7] + data_concat_word[1][9]), (255,50,255), 3)
+cv2.rectangle(img, (data_concat_word[2][6],data_concat_word[2][7]), (data_concat_word[2][6] + data_concat_word[2][8], data_concat_word[2][7] + data_concat_word[2][9]), (255,50,255), 3)
+cv2.rectangle(img, (data_concat_word[3][6],data_concat_word[3][7]), (data_concat_word[3][6] + data_concat_word[3][8], data_concat_word[3][7] + data_concat_word[3][9]), (255,50,255), 3)
+cv2.rectangle(img, (data_concat_word[4][6],data_concat_word[4][7]), (data_concat_word[4][6] + data_concat_word[4][8], data_concat_word[4][7] + data_concat_word[4][9]), (255,50,255), 3)
+
 
 ######################################################
 cv2.imshow("window", img)
