@@ -735,8 +735,6 @@ countStr = 0
 dataFrame = []
 
 for iterate,files in enumerate(os.listdir(path_of_dir)):
-    if countStr == 2:
-        break
 
     if files.endswith(ext):
         # print(files)

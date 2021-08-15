@@ -8,7 +8,7 @@ for files in os.listdir(path_of_dir):
     if files.endswith(ext):
         scr = path_of_dir + '/' + files
         crateName = path_of_dir
-        crateName = crateName+'/'+"F"+ str(countStr) + ".jpg" ## Change name here 
+        crateName = crateName+'/'+"P"+ str(countStr) + ".jpg" ## Change name here 
         os.rename(scr, crateName)
         countStr += 1
     else:
