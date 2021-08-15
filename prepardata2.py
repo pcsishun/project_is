@@ -710,21 +710,23 @@ def arrayWithCount_Final(data_concat_word, texCount):
 #################################################################################
 #################################################################################
 
- 
+# path_of_dir = 'D://project_openCV/project_OCR_eslip/image_krungsri'
+# ext = ('.jpg', '.png')
+# countStr = 0
+
+# for files in os.listdir(path_of_dir):
+#     if files.endswith(ext):
+#         print(files)
+#     else:
+#         continue
+
+
 img_convert = cv2.imread('./image_krungsri/F1.jpg') # img paths  
-
-# convert into gray scale.
 gray_scale = cv2.cvtColor(img_convert,cv2.COLOR_RGB2GRAY)
-
-# convert gray scale to black and with by using threshold.
 thresh, img_black_white  = cv2.threshold(gray_scale, 120, 240, cv2.THRESH_BINARY)
-
-# Save image 
 cv2.imwrite('useImage.jpg', img_black_white)
 img = cv2.imread('./useImage.jpg')
 image_data = pytesseract.image_to_data(img, output_type=Output.DICT, lang="eng+tha")
-
-
 data_of_image = departDataOfImage(image_data)
 data_overall_image = data_of_image[3]
 perfectArray = data_of_image[0]
@@ -739,28 +741,27 @@ data_with_finish_label = finishCreateLabel(data_with_label, perfectArray, eslipT
 data_extractingArea = extractingArea(data_with_finish_label)
 data_concat_word = data_area_word(data_with_finish_label, data_extractingArea)
 texCount = countingWord(data_concat_word)
-
 finsih_array = arrayWithCount_Final(data_concat_word, texCount)
+
 ################## print data and debug area ##################
+################## To pandas dataframe ##################
 
- 
-
-for i in finsih_array:
-    print(i)
-
-
+featureName = ['ESlip_Type', 'level', 'page_num', 'block_num', 'par_num', 'line_num', 'left','top', 'width', 'height', 'word', 'label', 'CEng', 'CTha', 'CNum', 'CSym']
+csvPath = 'D://project_openCV/project_OCR_eslip/csv'
+df = pd.DataFrame(finsih_array, columns=featureName)
+df.to_csv('data1.csv')
 
 ################## text area ##################
 
-cv2.rectangle(img, (data_concat_word[0][6],data_concat_word[0][7]), (data_concat_word[0][6] + data_concat_word[0][8], data_concat_word[0][7] + data_concat_word[0][9]), (255,50,255), 3)
-cv2.rectangle(img, (data_concat_word[1][6],data_concat_word[1][7]), (data_concat_word[1][6] + data_concat_word[1][8], data_concat_word[1][7] + data_concat_word[1][9]), (255,50,255), 3)
-cv2.rectangle(img, (data_concat_word[2][6],data_concat_word[2][7]), (data_concat_word[2][6] + data_concat_word[2][8], data_concat_word[2][7] + data_concat_word[2][9]), (255,50,255), 3)
-cv2.rectangle(img, (data_concat_word[3][6],data_concat_word[3][7]), (data_concat_word[3][6] + data_concat_word[3][8], data_concat_word[3][7] + data_concat_word[3][9]), (255,50,255), 3)
-cv2.rectangle(img, (data_concat_word[4][6],data_concat_word[4][7]), (data_concat_word[4][6] + data_concat_word[4][8], data_concat_word[4][7] + data_concat_word[4][9]), (255,50,255), 3)
+# cv2.rectangle(img, (data_concat_word[0][6],data_concat_word[0][7]), (data_concat_word[0][6] + data_concat_word[0][8], data_concat_word[0][7] + data_concat_word[0][9]), (255,50,255), 3)
+# cv2.rectangle(img, (data_concat_word[1][6],data_concat_word[1][7]), (data_concat_word[1][6] + data_concat_word[1][8], data_concat_word[1][7] + data_concat_word[1][9]), (255,50,255), 3)
+# cv2.rectangle(img, (data_concat_word[2][6],data_concat_word[2][7]), (data_concat_word[2][6] + data_concat_word[2][8], data_concat_word[2][7] + data_concat_word[2][9]), (255,50,255), 3)
+# cv2.rectangle(img, (data_concat_word[3][6],data_concat_word[3][7]), (data_concat_word[3][6] + data_concat_word[3][8], data_concat_word[3][7] + data_concat_word[3][9]), (255,50,255), 3)
+# cv2.rectangle(img, (data_concat_word[4][6],data_concat_word[4][7]), (data_concat_word[4][6] + data_concat_word[4][8], data_concat_word[4][7] + data_concat_word[4][9]), (255,50,255), 3)
 
 
 ######################################################
-cv2.imshow("window", img)
-cv2.waitKey(0)
+# cv2.imshow("window", img)
+# cv2.waitKey(0)
 
 
