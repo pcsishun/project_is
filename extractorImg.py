@@ -8,7 +8,6 @@ import os
 pytesseract.tesseract_cmd = r'C:\\Program Files\Tesseract-OCR\tesseract.exe' ## change path 
 
 
-
 def imgToWordKBank(image_data):
 
     dataConcat = []
@@ -124,7 +123,6 @@ def imgToWordKBank(image_data):
     return dataConcat
 
 
-
 def countingWord(dataConcat):
 
     arrayOfAscii = []
@@ -165,56 +163,6 @@ def countingWord(dataConcat):
 
     return countingLang
 
-
-def CreateLabel(data):
-    datawithlabel = []
-    arrayLabelName = ["Timing", "Name", "Account", "Amount", "RefCode"]
-    for iterate,element in enumerate(data):
-        storeage = []
-        if element[12] == 2:
-            for i in element:
-                storeage.append(i)
-
-            storeage.append(arrayLabelName[0])
-            datawithlabel.append(storeage)
-
-        elif element[12] == 3:
-            for i in element:
-                storeage.append(i)
-
-            storeage.append(arrayLabelName[1])
-            datawithlabel.append(storeage)
-            
-        elif element[12] == 6:
-            for i in element:
-                storeage.append(i)
-
-            storeage.append(arrayLabelName[2])
-            datawithlabel.append(storeage)
-            
-        elif element[12] == 11:
-            for i in element:
-                storeage.append(i)
-
-            storeage.append(arrayLabelName[4])
-            datawithlabel.append(storeage)
-            
-        elif element[12] == 13:
-            for i in element:
-                storeage.append(i)
-
-            storeage.append(arrayLabelName[3])
-            datawithlabel.append(storeage)
-
-        else:
-            for i in element:
-                storeage.append(i)
-                
-            storeage.append('NotUse')
-            datawithlabel.append(storeage)
-
-    return datawithlabel
-
 def addCounting(dataNew, countlang):
     data = []
     for iterate,element in enumerate(dataNew):
@@ -226,11 +174,19 @@ def addCounting(dataNew, countlang):
         data.append(store)
 
     return data
- 
-path_of_dir = 'D://project_openCV/project_OCR_eslip/image_kbank'
+
+path_kbank = "./image_kbank/K0.jpg"
+path_Krungsri = "./image_krungsri/E6.jpg"
+
+
+#########################################################
+#########################################################
+#########################################################
+
+path_of_dir = 'D://project_openCV/project_OCR_eslip/testdata'
 
 featureName = ['Bank', 'level', 'page_num', 'block_num', 'par_num', 'line_num',
- 'left','top', 'width', 'height', 'per_word', 'index_order', 'word', 'indexlabel', 'label', 'CEng', 'CTha', 'CNum', 'CSym', 'SlipID']
+ 'left','top', 'width', 'height', 'per_word', 'index_order', 'word', 'indexlabel', 'CEng', 'CTha', 'CNum', 'CSym', 'SlipID']
 
 # files = 'K1.jpg'
 ext = ('.jpg', '.png')
@@ -240,34 +196,43 @@ dataFrame = []
 
 for iterate,files in enumerate(os.listdir(path_of_dir)):
     if files.endswith(ext):
-        img_convert = cv2.imread('./image_kbank/'+files)
+
+        img_convert = cv2.imread(path_Krungsri)
+        #########################################################
+
         gray_scale = cv2.cvtColor(img_convert,cv2.COLOR_RGB2GRAY)
         thresh, img_black_white  = cv2.threshold(gray_scale, 120, 240, cv2.THRESH_BINARY)
-        cv2.imwrite('useImage.jpg', img_black_white)
-        img = cv2.imread('./useImage.jpg')
+        cv2.imwrite('extractorImg.jpg', img_black_white)
+        img = cv2.imread('./extractorImg.jpg')
         image_data = pytesseract.image_to_data(img, output_type=Output.DICT, lang="eng+tha")
+        #########################################################
 
-        data = imgToWordKBank(image_data)
-        countlang = countingWord(data)
-        dataNew = CreateLabel(data)
-        data = addCounting(dataNew, countlang)
+        dataConcat = imgToWordKBank(image_data)
+        countlang = countingWord(dataConcat)
+        data = addCounting(dataConcat, countlang)
 
+        bankname = ""
 
         try:
             store = []
             for i in data:
-                store.append('Kbank')
+                if files[0] == 'E':
+                    store.append('krungsri')
+                    bankname = 'krungsri'
+                elif files[0] == 'K':
+                    store.append('Kbank')
+                    bankname = 'Kbank'
+
                 for j in i:
                     store.append(j)
                 store.append(files)
                 dataFrame.append(store)
                 store = []
- 
-            print('Success:', files)
+
+            print('Success:', files, 'Bank Name:', bankname)
         except:
-            print('Error:', files)
+            print('Error:', files, 'Bank Name:', bankname)
             pass
                 
-         
 df = pd.DataFrame(dataFrame, columns= featureName)
-df.to_csv('data_Kbank.csv')
+df.to_csv('dataTest.csv')
