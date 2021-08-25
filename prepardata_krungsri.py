@@ -609,9 +609,8 @@ def dataTopandas(dataBeforeCount, texCount, files):
 #################################################################################
 #################################################################################
 #################################################################################
- 
- 
 
+  
 path_of_dir = 'D://project_openCV/project_OCR_eslip/image_krungsri'
 csvPath = 'D://project_openCV/project_OCR_eslip/csv'
 

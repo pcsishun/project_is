@@ -76,7 +76,6 @@ def imgToWordKBank(image_data):
             text[iterate],
         ])
 
-
     for usinglevel in array2D:
         if usinglevel[0] == 4 or usinglevel[0] == 5:
             dataCleanLevel.append(usinglevel)
